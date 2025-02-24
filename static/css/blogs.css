@@ -1,0 +1,116 @@
+.blog .articles {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    @media (max-width: 1024px) {
+        gap: 20px;
+    }
+}
+
+.blog article {
+    background-color: var(--yellow-100);
+    padding: 30px;
+    border-radius: 30px;
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+.blog .date {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--gray-500);
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.blog h3 {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.blog p {
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.blog figure {
+    width: 100%;
+    padding-top: 56.25%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 15px;
+}
+
+.blog figure img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    object-fit: cover;
+    transition: ease 3s all;
+}
+
+.blog figure figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--base-100);
+    text-align: center;
+    padding: 10px;
+    visibility: visible;
+    transition: ease 0.3s all;
+}
+
+.blog figure:hover figcaption {
+    opacity: 1;
+    visibility: visible;
+}
+
+.blog figure:hover img {
+    transform: scale(1.2);
+}
+
+.blog a {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.blog a:hover {
+    text-decoration: underline;
+}
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.blog article {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.blog article:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.blog article:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.blog article:nth-child(3) {
+    animation-delay: 0.6s;
+}

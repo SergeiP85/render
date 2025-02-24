@@ -1,0 +1,158 @@
+/* Основные переменные для цветов и шрифтов */
+:root {
+    --primary: #0077cc;
+    --secondary: #005599;
+    --text-dark: #333;
+    --text-light: #666;
+    --background-light: #f4f4f4;
+    --border-radius: 8px;
+}
+
+body {
+    line-height: 1.6;
+    color: var(--text-dark);
+    background: var(--background-light);
+    margin: 0;
+}
+
+/* Цитаты */
+.quote blockquote {
+    font-size: 24px;
+    font-style: italic;
+    padding: 20px;
+    border-left: 5px solid var(--primary);
+    background: #fff;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    color: var(--text-dark);
+    border-radius: var(--border-radius);
+}
+
+/* Общие стили для обоих блоков */
+.section-style {
+    background: #fff;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+}
+
+/* Стиль для текстового блока */
+.text-block p {
+    font-size: 18px;
+}
+
+/* Стиль для блока с картинкой слева и текстом */
+.text-image-left {
+    display: flex; 
+    flex-wrap: nowrap;
+    align-items: center; 
+    gap: 15px; /* Чтобы оставить расстояние между картинкой и текстом */
+}
+
+.text-image-left img {
+    max-width: 150px; /* Максимальная ширина для изображения */
+    border-radius: var(--border-radius);
+}
+
+.text-image-left p {
+    font-size: 18px; /* Шрифт для текста в блоке */
+}
+
+
+/* Грид с изображениями и текстом */
+.image-text-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.image-text-grid .item {
+    width: 350px;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+.image-text-grid .item:hover {
+    transform: scale(1.05);
+}
+.image-text-grid img {
+    max-width: 100%;
+    border-radius: var(--border-radius);
+}
+
+/* Таблицы */
+.table-section table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+.table-section th, .table-section td {
+    padding: 10px;
+    border: 1px solid var(--secondary);
+    text-align: left;
+}
+.table-section th {
+    background: var(--primary);
+    color: white;
+}
+
+/* Полноразмерное изображение */
+.full-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Списки */
+.ol-custom-list li::marker {
+    color: var(--primary); /* Цвет буллета */
+  }
+
+.ol-custom-list {
+    background: #fff;
+    padding-left: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 30px 0;
+}
+.ul-custom-list {
+    list-style: square;
+    background: #fff;
+    padding-left: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 30px 0;
+}
+
+ul li::marker {
+    color: var(--primary); /* Цвет буллета */
+  }
+
+/* Медиа (видео и аудио) */
+.audio {
+    width: 100%;
+    max-width: 600px;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+.video {
+    width: 100%;
+    max-width: 600px;
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.media {
+    margin: auto;
+    justify-content:center;
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}

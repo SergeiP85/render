@@ -1,0 +1,15 @@
+:root {
+    --text-shadow: 2px 2px 0 var(--blue-400), -2px -2px 0 var(--blue-800), -2px 2px 0 var(--blue-100), 2px -2px 0 var(--blue-400);
+	--base: #555;
+	--base-100: #f1f1f1;
+	--base-400: #555;
+	--base-800: #000;
+	--yellow: #ffda4b;
+	--yellow-100: #fffbe6;
+	--yellow-400: #ffda4b;
+	--yellow-800: #8b6f00;
+	--blue: #0a61ae;
+	--blue-100: #e2f8ff;
+	--blue-400: #61dafb;
+	--blue-800: #0a61ae;
+}

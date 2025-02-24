@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sergei's Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="icon" type="image/png" href="static/images/favicon.png">
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZ9CXS4G1X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZZ9CXS4G1X');
+</script>
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- templates/index.html -->
+{% extends "layout.html" %}
+
+{% block content %}
+    <main>
+        <section class="hero container">
+            <div class="hero-blue">
+                <div>
+                    <h1><small>{{ hero.title }}</small>
+                        {{ hero.subtitle }}
+                    </h1>
+                    <p>
+                        {{ hero.description|safe }}
+                        <span id="hiddenText">{{ hero.hidden_text|safe }}</span>
+                        <button id="toggleMainTextButton">more</button>
+                    </p>
+                    <div class="call-to-action">
+                        <a href="{{ hero.resume_link }}" class="button black">
+                            Download Resume
+                        </a>
+                        <a href="{{ hero.email_link }}" class="button white">
+                            E-mail Me
+                        </a>
+                    </div>
+                    <div class="social-links">
+                        <a href="{{ hero.github_link }}">
+                            <img src="static/images/github.png" alt="GitHub" width="48" />
+                        </a>
+                        <a href="{{ hero.linkedin_link }}">
+                            <img src="static/images/linkedin.png" alt="LinkedIn" width="48" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-yellow">
+                <div class="text-wrapper"></div>
+                <img src="static/images/sergei.png" alt="Sergei P" width="100%" />
+            </div>
+        </section>
+
+        <section class="logos container">
+            <small>My development stack aspirations. Check out my repositories in the eponymous section below</small>
+            <div class="marquee">
+                <div class="track">
+                    <img src="static/images/html.png" alt="HTML" width="128" />
+                    <img src="static/images/css.png" alt="CSS" width="128" />
+                    <img src="static/images/javascript.png" alt="JS" width="128" />
+                    <img src="static/images/sass.png" width="128" alt="Sass" />
+                    <img src="static/images/react.png" width="128" alt="React" />
+                    <img src="static/images/nextjs.png" width="128" alt="Next JS" />
+                    <img src="static/images/azure.png" width="128" alt="Azure" />
+                    <img src="static/images/vscode.png" width="128" alt="VS Code" />
+                    <img src="static/images/python.png" width="128" alt="Python" />
+                    <img src="static/images/html.png" alt="HTML" width="128" />
+                    <img src="static/images/css.png" alt="CSS" width="128" />
+                    <img src="static/images/javascript.png" alt="JS" width="128" />
+                    <img src="static/images/sass.png" width="128" alt="Sass" />
+                    <img src="static/images/react.png" width="128" alt="React" />
+                    <img src="static/images/nextjs.png" width="128" alt="Next JS" />
+                    <img src="static/images/azure.png" width="128" alt="Azure" />
+                    <img src="static/images/vscode.png" width="128" alt="VS Code" />
+                    <img src="static/images/python.png" width="128" alt="Python" />
+
+                </div>
+            </div>
+        </section>
+        <section id="skills" class="skills container">
+            <h2>
+                <small>About Me</small>
+                Skills
+            </h2>
+            <div class="holder-blue">
+                <div class="left-column">
+                    <h3>Web Development</h3>
+                    <ul id="frontend-skills-list">
+                    </ul>
+                    <h3>Communications</h3>
+                    <ul id="comm-skills-list"></ul>
+                    <button id="toggleCommSkillsButton">more</button>                   
+                </div>
+                <div class="right-column">
+                    <h3>{{ about_me_section.title }}</h3>
+                    <div>{{ about_me_section.content|safe }}</div>
+                </div>
+            </div>
+        </section>
+        <section id="experience" class="work-experience container">
+            <h2>
+                <small>Legacy</small>
+                Work Experience
+            </h2>
+            <div class="jobs">
+                {% for exp in experiences %}
+                    <article>
+                        <figure>
+                            <img src="{{ exp.image_url }}" alt="{{ exp.company_name }}" width="100%"/>
+                            <figcaption>{{ exp.company_name }}</figcaption>
+                        </figure>                      
+                        <h3>{{ exp.job_title }}</h3>
+                        <div>{{ exp.years }}</div>
+                        <p>{{ exp.description| safe }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+      
+        <section id="projects" class="bento container">
+            <h2>
+                <small>Achievements</small>
+                Projects and Awards
+            </h2>
+            <div class="bento-grid">
+                {% for project in projects %}
+                    <a href="{{ project.link_url }}" class="bento-item" target="_blank">
+                        <figure>
+                            <img src="{{ project.image_url }}" alt="Project image" />
+                            <figcaption>{{ project.description }}</figcaption>
+                        </figure>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+        
+        {% if show_github %}
+        <section class="container">
+            <h2>
+                <small>Website Development</small>
+                Repositories Portfolio
+            </h2>
+            <div class="git-app">
+                <form class="search-form" data-search-form>
+                    <input type="text" class="search-input" placeholder="Enter GIT Hub Username..." data-search-input>
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+                <div class="user-info-container" data-user-info-container></div>
+                <div class="repos-container" data-repos-container></div>
+            </div>
+        </section>
+        {% endif %}
+            
+        {% if references %}
+        <section id="references" class="references">
+            <h2>
+                <small>References</small>
+                Quotes
+            </h2>
+            <div class="wrapper">
+                {% for ref in references %}
+                <div class="ref-card">
+                    <img src="{{ url_for('static', filename='images/quote.png') }}" alt="quote">
+                    <p>{{ ref.quote|safe }}</p>
+                    <img class="reviewer" src="{{ ref.image_url }}" alt="colleague">
+                    <h3>{{ ref.reviewer|safe }}</h3>
+                    <a href="{{ ref.linkedin_url }}"><h3>{{ ref.name }}</h3></a>
+                    <small>{{ ref.position|safe }}, {{ ref.company }}</small>
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+                <small>See all recommendations on my&nbsp;<a href="https://www.linkedin.com/in/sergeipastushenkonenewyork/details/recommendations/?detailScreenTabIndex=0" target="_blank">LinkedIn page</a></small>
+            </div>
+        </section>
+        {% endif %}
+ 
+    {% if chat_settings and chat_settings.is_visible %}
+        <section class="chatbot container">
+            <h2>
+                <small>Talk to me (soon)</small>
+                Chatbot
+            </h2>
+            <div class="chatbot-blue">
+                <div class="chat-info">
+                    <h3>Azure AI Chatbot</h3>
+                    <p>{{ chat_settings.description|safe }}</p>
+                    <a href="static/files/Resume_Sergei_P.docx" class="button black">Download Resume</a>
+                </div>
+                <div class="chat-box">
+                    <div class="scroll-area">
+                        <ul id="chat-log">
+                            <li>
+                                <span class="avatar bot">AI</span>
+                                <div class="message">
+                                    Hi, I'm a chatbot that lets you interact with this portfolio and CV. How can I help?
+                                </div>
+                            </li>
+                            <li>
+                                <span class="avatar user">User</span>
+                                <div class="message">
+                                    I have a question to ask you about this resume
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="chat-message">
+                        <input type="text" placeholder="Hey Sergei, what skills are you best at?">
+                        <button class="button black">Send</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    
+    
+    </main>
+    
+    <script src="static/js/index.js"></script>
+    <script src="static/js/winter.js"></script>
+    <script src="static/js/skills.js"></script>
+    <script src="static/js/gituser.js" defer></script>
+
+        <!-- Calendly badge widget begin -->
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+        <script type="text/javascript">
+            window.onload = function() { 
+                Calendly.initBadgeWidget({ 
+                    url: 'https://calendly.com/spastushenko85', 
+                    text: 'Schedule time with me', 
+                    color: '#0a61ae', 
+                    textColor: '#ffffff', 
+                    branding: true 
+                }); 
+            }
+        </script>
+        <!-- Calendly badge widget end -->
+
+        {% endblock %}
+        
+</body>
+
+</html>

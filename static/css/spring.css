@@ -1,0 +1,16 @@
+.petal {
+    position: absolute;
+    top: -50px;
+    color: #ff69b4; 
+    pointer-events: none; 
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg); /* Поворот лепестков при падении */
+    }
+}

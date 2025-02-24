@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Home</title>
+    <link rel="stylesheet" href="/static/css/admin_styles.css">
+</head>
+
+<body>
+    {% extends 'admin/master.html' %}
+
+    {% block body %}
+    <div class="container py-5">
+        <div class="text-center mb-4 p-5 welcome-card">
+            <h1 class="display-5">👨‍💻 Welcome to the Admin Panel!</h1>
+            <p class="lead">Manage site content quickly and easily.</p>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="row text-center mb-5">
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">👤 Users</h5>
+                        <p class="card-text display-6">{{ user_count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">🚀 Projects</h5>
+                        <p class="card-text display-6">{{ project_count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">💼 Work Experience</h5>
+                        <p class="card-text display-6">{{ experience_count }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">📖 Pages</h5>
+                        <p class="card-text display-6">{{ page_count }}</p>
+                        <a href="{{ url_for('app_routes.pages_list') }}" class="btn btn-primary">View All Pages</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5 p-4 page-guide">
+            <h3>📖 How to Use Page Blocks</h3>
+            <p>Welcome to the Page Editor! Below you will find a simple guide on how to add different types of content
+                blocks to your page. Each block serves a specific purpose. Just copy the example, replace the
+                text/images, and paste it into the content field of the page editor.</p>
+
+            <h4>🏆 1. Header with Subtitle</h4>
+            <pre>{
+    "type": "text_header",
+    "title": "Main Heading",
+    "subtitle": "This is a subtitle providing more context."
+}</pre>
+
+            <h4>📄 2. Text Block</h4>
+            <pre>{
+    "type": "text_block",
+    "content": "This is a simple text block where you can write anything."
+}</pre>
+
+            <h4>🔢 3. Ordered List</h4>
+            <pre>{
+    "type": "ordered_list",
+    "items": [
+        "Step 1",
+        "Step 2"
+    ]
+}</pre>
+
+            <h4>🖼️ 4. Image with Text (Left)</h4>
+            <pre>{
+    "type": "text_image_left",
+    "image_url": "https://example.com/image.jpg",
+    "alt_text": "Description of the image",
+    "content": "This text describes the image on the left."
+}</pre>
+
+            <h4>🎬 5. Video</h4>
+            <pre>{
+    "type": "media",
+    "video_url": "https://example.com/video.mp4"
+}</pre>
+
+            <h4>📋 6. Unordered List</h4>
+            <pre>{
+    "type": "unordered_list",
+    "items": [
+        "Bullet point 1",
+        "Bullet point 2"
+    ]
+}</pre>
+
+            <h4>💬 7. Quote</h4>
+            <pre>{
+    "type": "quote",
+    "content": "Your inspirational quote goes here."
+}</pre>
+
+            <h4>🎵 8. Audio</h4>
+            <pre>{
+    "type": "media",
+    "audio_url": "https://example.com/audio.mp3"
+}</pre>
+
+            <h4>📊 9. Table</h4>
+            <pre>{
+    "type": "table",
+    "headers": ["Column 1", "Column 2"],
+    "rows": [
+        ["Row 1, Column 1", "Row 1, Column 2"],
+        ["Row 2, Column 1", "Row 2, Column 2"]
+    ]
+}</pre>
+
+            <h4>🌆 10. Full-Width Image</h4>
+            <pre>{
+    "type": "full_image",
+    "image_url": "https://example.com/big-image.jpg",
+    "alt_text": "Big image description."
+}</pre>
+
+            <h4>✅ How to Add Blocks to a Page?</h4>
+            <p>Insert the blocks inside []</p>
+            <ol>
+                <li>Open the Pages tab in the admin panel.</li>
+                <li>Click <b>Add Page</b> or edit an existing one.</li>
+                <li>Copy a block example from this guide.</li>
+                <li>Paste it into the Content field.</li>
+                <li>Modify the text, links, or images.</li>
+                <li>Click <b>Save</b> to update your page.</li>
+            </ol>
+            <p>That’s it! Your page is now updated 🎉</p>
+        </div>
+
+        <!-- Logout Button -->
+        <div class="text-center mt-4">
+            <a href="{{ url_for('app_routes.logout') }}" class="button">
+                🚪 Log Out
+            </a>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

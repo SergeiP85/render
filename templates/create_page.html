@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Page</title>
+    <!-- Подключение Bootstrap 3 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-header">Create a New Page</h1>
+
+        <!-- Инструкция по использованию блоков контента -->
+        <section>
+            <h3>📖 How to Use Page Blocks</h3>
+            <p>Welcome to the Page Editor! Below you will find a simple guide on how to add different types of content blocks to your page. Each block serves a specific purpose. Just copy the example, replace the text/images, and paste it into the content field of the page editor.</p>
+            
+            <h4>🏆 1. Header with Subtitle</h4>
+            <pre>
+{
+    "type": "text_header",
+    "title": "Main Heading",
+    "subtitle": "This is a subtitle providing more context."
+}
+            </pre>
+
+            <h4>📄 2. Text Block</h4>
+            <pre>
+{
+    "type": "text_block",
+    "content": "This is a simple text block where you can write anything."
+}
+            </pre>
+
+            <h4>🔢 3. Ordered List</h4>
+            <pre>
+{
+    "type": "ordered_list",
+    "items": [
+        "Step 1",
+        "Step 2"
+    ]
+}
+            </pre>
+
+            <h4>🖼️ 4. Image with Text (Left)</h4>
+            <pre>
+{
+    "type": "text_image_left",
+    "image_url": "https://example.com/image.jpg",
+    "alt_text": "Description of the image",
+    "content": "This text describes the image on the left."
+}
+            </pre>
+
+            <h4>🎬 5. Video</h4>
+            <pre>
+{
+    "type": "media",
+    "video_url": "https://example.com/video.mp4"
+}
+            </pre>
+
+            <h4>📋 6. Unordered List</h4>
+            <pre>
+{
+    "type": "unordered_list",
+    "items": [
+        "Bullet point 1",
+        "Bullet point 2"
+    ]
+}
+            </pre>
+
+            <h4>💬 7. Quote</h4>
+            <pre>
+{
+    "type": "quote",
+    "content": "Your inspirational quote goes here."
+}
+            </pre>
+
+            <h4>🎵 8. Audio</h4>
+            <pre>
+{
+    "type": "media",
+    "audio_url": "https://example.com/audio.mp3"
+}
+            </pre>
+
+            <h4>📊 9. Table</h4>
+            <pre>
+{
+    "type": "table",
+    "headers": ["Column 1", "Column 2"],
+    "rows": [
+        ["Row 1, Column 1", "Row 1, Column 2"],
+        ["Row 2, Column 1", "Row 2, Column 2"]
+    ]
+}
+            </pre>
+
+            <h4>🌆 10. Full-Width Image</h4>
+            <pre>
+{
+    "type": "full_image",
+    "image_url": "https://example.com/big-image.jpg",
+    "alt_text": "Big image description."
+}
+            </pre>
+
+            <h3>✅ How to Add Blocks to a Page?</h3>
+            <ol>
+                <li>Insert the blocks inside []</li>
+                <li>Open the Pages tab in the admin panel.</li>
+                <li>Click Add Page or edit an existing one.</li>
+                <li>Copy a block example from this guide.</li>
+                <li>Paste it into the Content field.</li>
+                <li>Modify the text, links, or images.</li>
+                <li>Click Save to update your page.</li>
+            </ol>
+            <p>That’s it! Your page is now updated 🎉</p>
+        </section>
+
+        <!-- Форма для создания страницы -->
+        <form method="POST" class="form-horizontal">
+            <div class="form-group">
+                <label for="slug" class="col-sm-2 control-label">Slug:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="slug" name="slug" class="form-control" placeholder="Enter slug" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">Title:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="title" name="title" class="form-control" placeholder="Enter title" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="content" class="col-sm-2 control-label">Content:</label>
+                <div class="col-sm-10">
+                    <textarea id="content" name="content" class="form-control" rows="5" placeholder="Enter content" required></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-ok"></span> Create Page
+                    </button>
+                    <a href="{{ url_for('app_routes.pages_list') }}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-arrow-left"></span> Back to Pages
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Подключение Bootstrap JS (опционально) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

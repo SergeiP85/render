@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block content %}
+    {% if content_blocks %}
+        {% for block in content_blocks %}
+            {% if block.type == 'text_header' %}
+                <section class="section-style text-block">
+                    {% if block.title %}
+                        <h2>{{ block.title }}</h2>
+                    {% endif %}
+                    {% if block.subtitle %}
+                        <h3>{{ block.subtitle }}</h3>
+                    {% endif %}
+                    <p>{{ block.content }}</p>
+                </section>
+
+            {% elif block.type == 'quote' %}
+                <section class="quote">
+                    <blockquote>{{ block.content }}</blockquote>
+                </section>
+
+            {% elif block.type == 'text_block' %}
+                <section class="section-style text-block">
+                    <p>{{ block.content }}</p>
+                </section>
+
+            {% elif block.type == 'text_image_left' %}
+                <section class="section-style text-image-left">
+                    <img src="{{ block.image_url }}" alt="{{ block.alt_text }}">
+                    <p>{{ block.content }}</p>
+                </section>
+
+            {% elif block.type == 'table' %}
+                <section class="table-section">
+                    <table>
+                        <tr>
+                            {% for header in block.headers %}
+                                <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for row in block.rows %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </section>
+
+            {% elif block.type == 'full_image' %}
+                <section class="full-image">
+                    <img src="{{ block.image_url }}" alt="{{ block.alt_text }}">
+                </section>
+
+            {% elif block.type == 'ordered_list' %}
+                <section class="ordered-list">
+                    <ol class="ol-custom-list">
+                        {% for item in block.items %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ol>
+                </section>
+
+            {% elif block.type == 'unordered_list' %}
+                <section class="unordered-list">
+                    <ul class="ul-custom-list">
+                        {% for item in block.items %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+
+            {% elif block.type == 'media' %}
+                <section class="media">
+                    {% if block.video_url %}
+                        <video controls class="video">
+                            <source src="{{ block.video_url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% endif %}
+                    {% if block.audio_url %}
+                        <audio controls class="audio">
+                            <source src="{{ block.audio_url }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    {% endif %}
+                </section>
+
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>Нет контента для отображения</p>
+    {% endif %}
+{% endblock %}

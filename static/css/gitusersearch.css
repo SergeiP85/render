@@ -1,0 +1,95 @@
+.search-form {
+    display: flex;
+    margin-top: 15px;
+    gap: 15px;
+    justify-content: center;
+}
+
+.search-input {
+    width: 300px;
+    padding: 5px;
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid transparent;
+    background-color: var(--base-100);
+}
+
+.search-input:hover {
+    outline: none;
+    background-color: white;
+    border: 1px solid var(--base-100);
+}
+
+.search-button {
+    display: inline-block;
+    color: var(--base);
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: var(--blue);
+    color: var(--base-100);
+    border-radius: 10px;
+    transition: ease 0.3s all;
+    border: none;
+}
+
+.search-button:hover {
+    border-radius: 10px;
+    background-color: var(--base-800);
+    cursor: pointer; 
+}
+
+.user-info-container, .repos-container {
+    padding: 20px;
+    color: var(--base-800);
+    text-align: center;
+}
+
+.user-info-container img {
+    width: 100px;
+    border-radius: 50%;
+}
+
+.repo {
+    margin: 5px;
+}
+
+.repos-container {
+    font-size: 16px;
+}
+
+/* table styles */
+
+.repos-container {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+.repo-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.repo-table th, .repo-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.repo-table th {
+    background: #f4f4f4;
+    font-weight: bold;
+}
+
+.repo-table tr:hover {
+    background: var(--base-100);
+}
+
+.repo-table a {
+    text-decoration: none;
+    color: var(--blue);
+    font-weight: bold;
+}
