@@ -1,13 +1,18 @@
 import logging
 import os
-from urllib import request
 from flask import Flask, render_template, request, jsonify
 from flask_migrate import Migrate
+from dotenv import load_dotenv
+
+import openai  # Импортируем openai
+# from openai.error import OpenAIError
+
+# Ваши локальные импорты
 from models import db
 from routes import app_routes
 from admin import init_admin
-from azure.ai.openai import ChatCompletionClient # type: ignore
-from azure.core.credentials import AzureKeyCredential # type: ignore
+
+load_dotenv()  # Загружаем переменные окружения из .env файла
 
 # Устанавливаем переменную окружения FLASK_APP для миграций (если нужно)
 os.environ["FLASK_APP"] = "app.py"
@@ -24,52 +29,66 @@ app.logger.addHandler(handler)
 
 # Логирование данных формы при POST-запросах
 @app.before_request
-def log_form_data():
+def log_request_data():
     if request.method == 'POST':
-        # Логируем данные формы в консоль
-        print(f"Form data: {request.form}")
-        app.logger.debug(f"Form data: {request.form}")
+        app.logger.debug(f"Request headers: {request.headers}")
+        app.logger.debug(f"Request data: {request.data}")
+        app.logger.debug(f"Request JSON: {request.get_json()}")
 
 # Указываем URL базы данных напрямую, например, SQLite:
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Используем переменную окружения для секретного ключа
-app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default_secret_key')  # Можно задать default, если переменной нет
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default_secret_key')
 
 # Инициализация базы данных и миграций
 db.init_app(app)
 migrate = Migrate(app, db)
 
-# Настройки Azure OpenAI
-AZURE_API_KEY = os.getenv('AZURE_API_KEY', '123')
-AZURE_ENDPOINT = os.getenv('AZURE_ENDPOINT', '123')
-AZURE_DEPLOYMENT_NAME = os.getenv('AZURE_DEPLOYMENT_NAME', '123')
+# Настройка клиента OpenAI с использованием Azure
+openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
+openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")  # Получаем ключ из переменной окружения
+openai.api_type = "azure"  # Указываем, что используем Azure
 
-client = ChatCompletionClient(endpoint=AZURE_ENDPOINT, credential=AzureKeyCredential(AZURE_API_KEY))
-
+# Маршрут для обработки сообщений чат-бота
 @app.route("/chat", methods=["POST"])
 def chat():
-    user_message = request.json.get('message')
+    # Получаем JSON данные из запроса
+    data = request.get_json()
+    
+    # Извлекаем сообщение пользователя
+    user_message = data.get('message') if data else None
 
     if not user_message:
         return jsonify({"error": "No message provided"}), 400
 
-    # Формируем запрос к Azure OpenAI
-    response = client.get_chat_completions(
-        deployment_id="portfoliobot",
-        messages=[{"role": "user", "content": user_message}]
-    )
+    try:
+        # Отправка сообщения в Azure OpenAI с новым API
+        response = openai.ChatCompletion.create(
+            messages=[{"role": "user", "content": user_message}],
+            model="gpt-35-turbo",  # Укажите модель (например, gpt-4o)
+        )
 
-    bot_reply = response.result.choices[0].message['content']
-    return jsonify({"reply": bot_reply})
+        bot_reply = response['choices'][0]['message']['content'].strip()  # Получаем текст ответа
+        return jsonify({"reply": bot_reply})
+
+    except openai.error.OpenAIError as e:
+        app.logger.error(f"Ошибка при обращении к OpenAI API: {e}")
+        return jsonify({"error": "Ошибка при обращении к OpenAI API"}), 500
+    
+    except Exception as e:
+        print("Отправляем запрос в OpenAI API...")
+        app.logger.error(f"Неизвестная ошибка: {e}")
+        return jsonify({"error": "Неизвестная ошибка"}), 500
+        
 
 # Регистрация маршрутов и админки
 app.register_blueprint(app_routes)
 init_admin(app)
 
 # Настроим логирование ошибок
-logging.basicConfig(filename='error.log', level=logging.ERROR)  # ✅ Теперь это работает правильно
+logging.basicConfig(filename='error.log', level=logging.ERROR)
 
 # Обработчик ошибки 404 (Страница не найдена)
 @app.errorhandler(404)
@@ -90,5 +109,4 @@ def handle_exception(error):
 
 # Запуск приложения
 if __name__ == '__main__':
-    app.config['FLASK_DEBUG'] = True
-    app.run(host='0.0.0.0', port=10000)
+    app.run(debug=True)

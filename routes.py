@@ -2,7 +2,6 @@ from flask import current_app
 from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import check_password_hash
-from app import AZURE_DEPLOYMENT_NAME
 from models import Page, db, AboutMeSection, Experience, HeroContent, User, Project, Settings, ChatSettings, Reference
 import json
 from flask import jsonify
@@ -20,7 +19,7 @@ def index():
     references = Reference.query.all()
     chat_settings = ChatSettings.query.first()
     
-    print(chat_settings)  # Печать данных для отладки
+
 
     return render_template('index.html', hero=hero, about_me_section=about_me_section, experiences=experiences, projects=projects, chat_settings=chat_settings, show_github=settings.show_github if settings else False, references=references)
 
