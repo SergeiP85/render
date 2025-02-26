@@ -1,11 +1,13 @@
 import logging
 import os
 from urllib import request
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_migrate import Migrate
 from models import db
 from routes import app_routes
 from admin import init_admin
+from azure.ai.openai import ChatCompletionClient # type: ignore
+from azure.core.credentials import AzureKeyCredential # type: ignore
 
 # Устанавливаем переменную окружения FLASK_APP для миграций (если нужно)
 os.environ["FLASK_APP"] = "app.py"
@@ -38,6 +40,29 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default_secret_key')  # Можн
 # Инициализация базы данных и миграций
 db.init_app(app)
 migrate = Migrate(app, db)
+
+# Настройки Azure OpenAI
+AZURE_API_KEY = os.getenv('AZURE_API_KEY', '123')
+AZURE_ENDPOINT = os.getenv('AZURE_ENDPOINT', '123')
+AZURE_DEPLOYMENT_NAME = os.getenv('AZURE_DEPLOYMENT_NAME', '123')
+
+client = ChatCompletionClient(endpoint=AZURE_ENDPOINT, credential=AzureKeyCredential(AZURE_API_KEY))
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    user_message = request.json.get('message')
+
+    if not user_message:
+        return jsonify({"error": "No message provided"}), 400
+
+    # Формируем запрос к Azure OpenAI
+    response = client.get_chat_completions(
+        deployment_id="portfoliobot",
+        messages=[{"role": "user", "content": user_message}]
+    )
+
+    bot_reply = response.result.choices[0].message['content']
+    return jsonify({"reply": bot_reply})
 
 # Регистрация маршрутов и админки
 app.register_blueprint(app_routes)

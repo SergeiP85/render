@@ -203,7 +203,8 @@
                 <div class="chat-box">
                     <div class="scroll-area">
                         <ul id="chat-log">
-                            <li>
+                            <!-- Начальные сообщения, которые отображаются при старте чата -->
+                            <!-- <li>
                                 <span class="avatar bot">AI</span>
                                 <div class="message">
                                     Hi, I'm a chatbot that lets you interact with this portfolio and CV. How can I help?
@@ -214,14 +215,17 @@
                                 <div class="message">
                                     I have a question to ask you about this resume
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="chat-message">
-                        <input type="text" placeholder="Hey Sergei, what skills are you best at?">
-                        <button class="button black">Send</button>
+                        <!-- Поле ввода для сообщения пользователя -->
+                        <input type="text" placeholder="Hey Sergei, what skills are you best at?" id="user-input" />
+                        <!-- Кнопка отправки сообщения -->
+                        <button class="button black" id="send-button">Send</button>
                     </div>
                 </div>
+                
             </div>
         </section>
     {% endif %}
@@ -233,6 +237,7 @@
     <script src="static/js/winter.js"></script>
     <script src="static/js/skills.js"></script>
     <script src="static/js/gituser.js" defer></script>
+    <script src="static/js/chat.js"></script>
 
         <!-- Calendly badge widget begin -->
         <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
