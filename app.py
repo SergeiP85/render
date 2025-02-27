@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 
 import openai  # Импортируем openai
-# from openai.error import OpenAIError
+from openai import AzureOpenAI
 
 # Ваши локальные импорты
 from models import db
@@ -14,7 +14,6 @@ from admin import init_admin
 
 load_dotenv()  # Загружаем переменные окружения из .env файла
 
-# Устанавливаем переменную окружения FLASK_APP для миграций (если нужно)
 os.environ["FLASK_APP"] = "app.py"
 
 print("✅ Flask загружен и работает!")
@@ -35,53 +34,55 @@ def log_request_data():
         app.logger.debug(f"Request data: {request.data}")
         app.logger.debug(f"Request JSON: {request.get_json()}")
 
-# Указываем URL базы данных напрямую, например, SQLite:
+# Настройки базы данных
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Используем переменную окружения для секретного ключа
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default_secret_key')
 
 # Инициализация базы данных и миграций
 db.init_app(app)
 migrate = Migrate(app, db)
 
-# Настройка клиента OpenAI с использованием Azure
-openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")  # Получаем ключ из переменной окружения
-openai.api_type = "azure"  # Указываем, что используем Azure
+# Инициализация клиента Azure OpenAI
+client = AzureOpenAI(
+    azure_endpoint=os.getenv("ENDPOINT_URL", "https://sergei.openai.azure.com/"),
+    api_key=os.getenv("AZURE_OPENAI_API_KEY", "REPLACE_WITH_YOUR_KEY_VALUE_HERE"),
+    api_version="2024-05-01-preview"  # Убедись, что версия API актуальна
+)
 
-# Маршрут для обработки сообщений чат-бота
 @app.route("/chat", methods=["POST"])
 def chat():
-    # Получаем JSON данные из запроса
-    data = request.get_json()
-    
-    # Извлекаем сообщение пользователя
-    user_message = data.get('message') if data else None
-
-    if not user_message:
-        return jsonify({"error": "No message provided"}), 400
-
     try:
-        # Отправка сообщения в Azure OpenAI с новым API
-        response = openai.ChatCompletion.create(
-            messages=[{"role": "user", "content": user_message}],
-            model="gpt-35-turbo",  # Укажите модель (например, gpt-4o)
+        data = request.get_json()
+        user_message = data.get('message') if data else None
+
+        if not user_message:
+            return jsonify({"error": "No message provided"}), 400
+
+        # Формирование чатов в новом формате
+        messages = [
+            {"role": "system", "content": "Ты помощник ИИ, помогай пользователям с вопросами по резюме, навыкам и опыту работы."},
+            {"role": "user", "content": user_message}
+        ]
+
+        # Создание завершения чата
+        completion = client.chat.completions.create(
+            model="gpt-4",  # Проверь правильность названия deployment в Azure
+            messages=messages,
+            max_tokens=100,
+            temperature=0.7,
         )
 
-        bot_reply = response['choices'][0]['message']['content'].strip()  # Получаем текст ответа
+        # Выводим структуру объекта completion
+        print(completion)
+
+        # Получение ответа от модели
+        bot_reply = completion.choices[0].message.content.strip()
         return jsonify({"reply": bot_reply})
 
-    except openai.error.OpenAIError as e:
-        app.logger.error(f"Ошибка при обращении к OpenAI API: {e}")
-        return jsonify({"error": "Ошибка при обращении к OpenAI API"}), 500
-    
     except Exception as e:
-        print("Отправляем запрос в OpenAI API...")
-        app.logger.error(f"Неизвестная ошибка: {e}")
-        return jsonify({"error": "Неизвестная ошибка"}), 500
-        
+        app.logger.error(f"Ошибка при обработке запроса: {e}")
+        return jsonify({"error": str(e)}), 500
 
 # Регистрация маршрутов и админки
 app.register_blueprint(app_routes)
