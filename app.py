@@ -69,8 +69,8 @@ def chat():
         completion = client.chat.completions.create(
             model="gpt-4",  # Проверь правильность названия deployment в Azure
             messages=messages,
-            max_tokens=100,
-            temperature=0.7,
+            max_tokens=30,
+            temperature=0.3,
         )
 
         # Выводим структуру объекта completion
