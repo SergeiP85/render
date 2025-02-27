@@ -67,7 +67,7 @@ def chat():
 
         # Создание завершения чата
         completion = client.chat.completions.create(
-            model="gpt-4",  # Проверь правильность названия deployment в Azure
+            model="gpt-35-turbo",  # Проверь правильность названия deployment в Azure
             messages=messages,
             max_tokens=100,
             temperature=0.7,
