@@ -32,12 +32,16 @@ def log_request_data():
     if request.method == 'POST':
         app.logger.debug(f"Request headers: {request.headers}")
         app.logger.debug(f"Request data: {request.data}")
-        app.logger.debug(f"Request JSON: {request.get_json()}")
+
+        if request.content_type == "application/json":
+            json_data = request.get_json(silent=True)  # <-- Добавили silent=True
+            app.logger.debug(f"Request JSON: {json_data}")
+
 
 # Настройки базы данных
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default_secret_key')
+app.secret_key = os.getenv('FLASK_SECRET_KEY')
 
 # Инициализация базы данных и миграций
 db.init_app(app)

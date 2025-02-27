@@ -106,6 +106,9 @@ def delete_page(id):
 
 @app_routes.route('/login', methods=['GET', 'POST'])
 def login():
+    print("Request content-type:", request.content_type)
+    print("Raw request data:", request.get_data())  # Покажет весь POST-запрос
+    print("Form data:", request.form)  # Покажет распарсенные данные формы
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
