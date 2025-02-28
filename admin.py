@@ -5,9 +5,15 @@ from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager, current_user
 from markupsafe import Markup
-from wtforms import TextAreaField
+from wtforms import StringField, TextAreaField
 from models import AboutMeSection, ChatSettings, Experience, HeroContent, Page, Settings, db, User, Project, Reference
 from wtforms.fields import SelectField
+from flask_admin.form import DateTimeField
+from wtforms.validators import Optional
+from flask_admin.form import DateTimeField
+from wtforms import DateTimeField
+from datetime import datetime
+
 
 
 # Настройка логина
@@ -50,10 +56,24 @@ admin = Admin(name='Admin Panel', template_mode='bootstrap3', index_view=MyAdmin
 from flask_admin.contrib.sqla import ModelView
 
 class PageAdmin(ModelView):
-    form_columns = ['slug', 'title', 'content']  
+    # Добавляем новые поля в form_columns
+    form_columns = ['slug', 'title', 'content', 'published_date', 'image_url', 'teaser_text', 'category']
+
+    # Переопределяем поле даты для корректного отображения в админке
+    form_overrides = {'published_date': DateTimeField}
+
+    # Добавляем дополнительные поля
+    form_extra_fields = {
+        'published_date': DateTimeField('Published Date', format='%Y-%m-%d %H:%M:%S', validators=[Optional()]),
+        'image_url': StringField('Image URL'),
+        'teaser_text': StringField('Teaser Text'),
+        'category': StringField('Category')
+    }
 
     def on_model_change(self, form, model, is_created):
-        print(f"Form data: {form.data}")  # Выведем данные формы
+        if is_created and not model.published_date:
+            model.published_date = datetime.utcnow()  # Устанавливаем текущую дату, если не введена
+        print(f"Form data: {form.data}")  # Логируем вводимые данные
         return super().on_model_change(form, model, is_created)
 
 

@@ -12,7 +12,6 @@
                     {% if block.subtitle %}
                         <h3>{{ block.subtitle }}</h3>
                     {% endif %}
-                    <p>{{ block.content }}</p>
                 </section>
 
             {% elif block.type == 'quote' %}
@@ -90,6 +89,22 @@
 
             {% endif %}
         {% endfor %}
+
+        <!-- Добавление даты публикации страницы и имени автора -->
+        <div class="published-date">
+            {% if page.published_date %}
+                <p><strong>Published on:</strong> {{ page.published_date.strftime('%B %d, %Y') }}</p>
+            {% else %}
+                <p><strong>Published on:</strong> Date not set</p>
+            {% endif %}
+            
+            {% if page.author %}
+                <p><strong>Author:</strong> {{ page.author.username }}</p>
+            {% else %}
+                <p><strong>Author:</strong> Unknown</p>
+            {% endif %}
+        </div>
+
     {% else %}
         <p>Нет контента для отображения</p>
     {% endif %}

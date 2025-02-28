@@ -2,13 +2,11 @@
 from flask import json
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from datetime import datetime
 
 db = SQLAlchemy()
 
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+
 
 class HeroContent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -70,25 +68,38 @@ class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(100), unique=True, nullable=False)
     title = db.Column(db.String(255), nullable=False)
-    content = db.Column(db.Text, nullable=False)  # Здесь можно хранить JSON
+    content = db.Column(db.Text, nullable=False)  # JSON content
+    published_date = db.Column(db.DateTime, default=datetime.utcnow)  # Date of publication
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    # Новые поля
+    image_url = db.Column(db.String(255), nullable=True)  # URL картинки
+    teaser_text = db.Column(db.String(255), nullable=True)  # Тизер
+    category = db.Column(db.String(100), nullable=True)  # Категория
+
+    # Связь с пользователем
+    user = db.relationship('User', backref=db.backref('created_pages', lazy=True))
 
     def get_content_blocks(self):
         try:
-            # Преобразуем строку JSON в список
+            # Декодируем JSON в список
             content_blocks = json.loads(self.content)
-            
-            # Проверяем, что это список
             if not isinstance(content_blocks, list):
                 current_app.logger.error(f"Ошибка: содержимое для страницы '{self.slug}' не является списком.")
-                return []  # Возвращаем пустой список, если данные некорректные
-            
+                return []
             return content_blocks
         except json.JSONDecodeError:
-            # Ловим ошибку, если JSON некорректен
             current_app.logger.error(f"Ошибка при декодировании JSON для страницы '{self.slug}'.")
-            return []  # Возвращаем пустой список при ошибке декодирования
+            return []
         except Exception as e:
-            # Ловим другие исключения и выводим ошибку
             current_app.logger.error(f"Неизвестная ошибка при получении контент-блоков для страницы '{self.slug}': {str(e)}")
-            return []  # Возвращаем пустой список при ошибке
+            return []
 
+    def __repr__(self):
+        return f"<Page {self.title}>"
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    pages = db.relationship('Page', backref='author', lazy=True)

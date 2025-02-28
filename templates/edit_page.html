@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <!-- Подключение Bootstrap 3 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
+
 <body>
     <div class="container">
         <h1 class="page-header">📝 Edit Page</h1>
@@ -33,21 +35,34 @@
             <div class="form-group">
                 <label for="content" class="col-sm-2 control-label">Content:</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" id="content" name="content" rows="5" required>{{ page.content }}</textarea>
+                    <textarea class="form-control" id="content" name="content" rows="5"
+                        required>{{ page.content }}</textarea>
                 </div>
             </div>
 
-            <!-- Кнопки отправки и отмены -->
+            <!-- Поле для выбора даты публикации -->
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-floppy-disk"></span> Update Page
-                    </button>
-                    <a href="{{ url_for('app_routes.pages_list') }}" class="btn btn-default">
-                        <span class="glyphicon glyphicon-arrow-left"></span> Cancel
-                    </a>
+                <label for="published_date" class="col-sm-2 control-label">Published Date:</label>
+                <div class="col-sm-10">
+                    <input type="datetime-local" class="form-control" id="published_date" name="published_date"
+                        value="{{ page.published_date.strftime('%Y-%m-%dT%H:%M') if page.published_date else '' }}">
                 </div>
             </div>
+
+
+
+
+        <!-- Кнопки отправки и отмены -->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> Update Page
+                </button>
+                <a href="{{ url_for('app_routes.pages_list') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-arrow-left"></span> Cancel
+                </a>
+            </div>
+        </div>
         </form>
     </div>
 
@@ -55,4 +70,5 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
+
 </html>

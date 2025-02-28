@@ -5,8 +5,14 @@ from werkzeug.security import check_password_hash
 from models import Page, db, AboutMeSection, Experience, HeroContent, User, Project, Settings, ChatSettings, Reference
 import json
 from flask import jsonify
+from flask_login import current_user
 
 app_routes = Blueprint('app_routes', __name__)
+
+@app_routes.route('/blog')
+def blog():
+    pages = Page.query.all()  # Получаем все страницы
+    return render_template('blog.html', pages=pages)
 
 # Главная страница
 @app_routes.route('/')
@@ -31,18 +37,33 @@ def show_page(slug):
 
     try:
         page = Page.query.filter_by(slug=slug).first_or_404()
-        
+
         # Получаем контент-блоки с проверкой
         content_blocks = page.get_content_blocks()
 
-        return render_template('page_template.html', page=page, content_blocks=content_blocks)
-    
+        # Пытаемся извлечь необходимые данные
+        image_url = None
+        teaser_text = None
+        category = "Uncategorized"
+
+        for block in content_blocks:
+            if block['type'] == 'full_image' and not image_url:
+                image_url = block['image_url']
+            elif block['type'] == 'text_header':
+                teaser_text = block['subtitle']
+            elif block['type'] == 'category':
+                category = block['text']
+
+        return render_template('page_template.html', page=page, content_blocks=content_blocks,
+                               image_url=image_url, teaser_text=teaser_text, category=category)
+
     except Exception as e:
         current_app.logger.error(f"Ошибка при загрузке страницы с slug '{slug}': {str(e)}")
         return render_template('errors/500.html'), 500
 
 
-# Создание новой страницы
+
+
 @app_routes.route('/admin/page/create', methods=['GET', 'POST'])
 @login_required
 def create_page():
@@ -52,21 +73,31 @@ def create_page():
         slug = request.form['slug']
         title = request.form['title']
         content = request.form['content']
+        image_url = request.form.get('image_url')  # Получаем URL картинки
+        teaser_text = request.form.get('teaser_text')  # Получаем тизер
+        category = request.form.get('category')  # Получаем категорию
 
         # Проверка на уникальность slug
         if Page.query.filter_by(slug=slug).first():
-            
             return render_template('pages_list.html', pages=pages)
 
-        # Создание нового объекта страницы
-        new_page = Page(slug=slug, title=title, content=content)
+        # Создание нового объекта страницы с автором и новыми полями
+        new_page = Page(
+            slug=slug, 
+            title=title, 
+            content=content, 
+            user_id=current_user.id,  # Связка с текущим пользователем
+            image_url=image_url,  # Устанавливаем URL картинки
+            teaser_text=teaser_text,  # Устанавливаем тизер
+            category=category  # Устанавливаем категорию
+        )
         db.session.add(new_page)
         db.session.commit()
-
 
         return redirect(url_for('admin.index'))
 
     return render_template('create_page.html')
+
 
 @app_routes.route('/admin/pages', methods=['GET'])
 @login_required

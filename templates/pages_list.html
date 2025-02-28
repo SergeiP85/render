@@ -26,6 +26,8 @@
                         <th>ID</th>
                         <th>Slug</th>
                         <th>Page Link</th>
+                        <th>Published Date</th> <!-- Новый столбец для даты публикации -->
+                        <th>Author</th> <!-- Новый столбец для имени пользователя -->
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -39,6 +41,22 @@
                                 <a href="{{ url_for('app_routes.show_page', slug=page.slug) }}" target="_blank" class="btn btn-default btn-sm">
                                     <span class="glyphicon glyphicon-link"></span> View Page
                                 </a>
+                            </td>
+                            <td>
+                                <!-- Отображение даты публикации -->
+                                {% if page.published_date %}
+                                    {{ page.published_date.strftime('%B %d, %Y') }}
+                                {% else %}
+                                    Not set
+                                {% endif %}
+                            </td>
+                            <td>
+                                <!-- Отображение имени пользователя -->
+                                {% if page.author %}
+                                    {{ page.author.username }}
+                                {% else %}
+                                    Unknown
+                                {% endif %}
                             </td>
                             <td>
                                 <!-- Кнопка "Редактировать" -->

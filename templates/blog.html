@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block content %}
+    <section class="hero container">
+        <div class="hero-blue">
+            <div>
+                <h1><small>Welcome to my</small> news and blog section</h1>
+                <p>Here, you will find news, announcements, and articles <b>showcasing my achievements through copywriting skills!</b>
+                    <span id="hiddenText"> Some will include video and photo materials, allowing you to see my editing skills in action. I will also explain each of my GitHub repositories, detailing how I created them and the features they have under the hood.</span>
+                    <button id="toggleMainTextButton">more</button>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="blog" class="blog container">
+        <h2><small>Latest</small> Articles</h2>
+        <div class="articles">
+            {% for page in pages %}
+                <article>
+                    <figure>
+                        <img src="{{ page.image_url or '/static/images/default.jpg' }}" alt="Article Image" width="100%" />
+                        <figcaption>{{ page.category or 'Uncategorized' }}</figcaption>
+                    </figure>
+                    <div class="date">{{ page.published_date.strftime('%B %d, %Y') if page.published_date else "No date" }}</div>
+                    <h3>{{ page.title }}</h3>
+                    <p>{{ page.teaser_text or "No teaser available." }}</p>
+                    <a href="{{ url_for('app_routes.show_page', slug=page.slug) }}">Read more →</a>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
