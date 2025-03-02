@@ -36,8 +36,8 @@
                         {{ hero.subtitle }}
                     </h1>
                     <p>
-                        {{ hero.description|safe }}
-                        <span id="hiddenText">{{ hero.hidden_text|safe }}</span>
+                        {{ hero.description }}
+                        <span id="hiddenText">{{ hero.hidden_text }}</span>
                         <button id="toggleMainTextButton">more</button>
                     </p>
                     <div class="call-to-action">
@@ -233,8 +233,9 @@
     
     </main>
     
-    <script src="static/js/index.js"></script>
-    <script src="static/js/winter.js"></script>
+
+
+    <!-- <script src="static/js/winter.js"></script> -->
     <script src="static/js/skills.js"></script>
     <script src="static/js/gituser.js" defer></script>
     <script src="static/js/chat.js"></script>
@@ -255,7 +256,7 @@
         <!-- Calendly badge widget end -->
 
         {% endblock %}
-        
+        <script src="../static/js/index.js"></script>   
 </body>
 
 </html>
