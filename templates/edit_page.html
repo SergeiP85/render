@@ -35,12 +35,11 @@
             <div class="form-group">
                 <label for="content" class="col-sm-2 control-label">Content:</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" id="content" name="content" rows="5"
-                        required>{{ page.content }}</textarea>
+                    <textarea class="form-control" id="content" name="content" rows="5" required>{{ page.content }}</textarea>
                 </div>
             </div>
 
-            <!-- Поле для выбора даты публикации -->
+            <!-- Поле для Published Date -->
             <div class="form-group">
                 <label for="published_date" class="col-sm-2 control-label">Published Date:</label>
                 <div class="col-sm-10">
@@ -49,20 +48,41 @@
                 </div>
             </div>
 
-
-
-
-        <!-- Кнопки отправки и отмены -->
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-floppy-disk"></span> Update Page
-                </button>
-                <a href="{{ url_for('app_routes.pages_list') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-arrow-left"></span> Cancel
-                </a>
+            <!-- Поле для Teaser Text -->
+            <div class="form-group">
+                <label for="teaser_text" class="col-sm-2 control-label">Teaser Text:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="teaser_text" name="teaser_text" value="{{ page.teaser_text }}">
+                </div>
             </div>
-        </div>
+
+            <!-- Поле для Image URL -->
+            <div class="form-group">
+                <label for="image_url" class="col-sm-2 control-label">Image URL:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="image_url" name="image_url" value="{{ page.image_url }}">
+                </div>
+            </div>
+
+            <!-- Поле для Category -->
+            <div class="form-group">
+                <label for="category" class="col-sm-2 control-label">Category:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="category" name="category" value="{{ page.category }}">
+                </div>
+            </div>
+
+            <!-- Кнопки отправки и отмены -->
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Update Page
+                    </button>
+                    <a href="{{ url_for('app_routes.pages_list') }}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-arrow-left"></span> Cancel
+                    </a>
+                </div>
+            </div>
         </form>
     </div>
 
