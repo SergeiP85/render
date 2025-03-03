@@ -36,8 +36,8 @@
                         {{ hero.subtitle }}
                     </h1>
                     <p>
-                        {{ hero.description }}
-                        <span id="hiddenText">{{ hero.hidden_text }}</span>
+                        {{ hero.description |safe }}
+                        <span id="hiddenText">{{ hero.hidden_text |safe }}</span>
                         <button id="toggleMainTextButton">more</button>
                     </p>
                     <div class="call-to-action">
@@ -236,6 +236,7 @@
 
 
     <!-- <script src="static/js/winter.js"></script> -->
+    <script src="/static/js/spring.js"></script>
     <script src="static/js/skills.js"></script>
     <script src="static/js/gituser.js" defer></script>
     <script src="static/js/chat.js"></script>

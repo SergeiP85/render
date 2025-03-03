@@ -7,27 +7,27 @@
             {% if block.type == 'text_header' %}
                 <section class="section-style text-block">
                     {% if block.title %}
-                        <h2>{{ block.title }}</h2>
+                        <h2>{{ block.title|safe }}</h2>
                     {% endif %}
                     {% if block.subtitle %}
-                        <h3>{{ block.subtitle }}</h3>
+                        <h3>{{ block.subtitle|safe }}</h3>
                     {% endif %}
                 </section>
 
             {% elif block.type == 'quote' %}
                 <section class="quote">
-                    <blockquote>{{ block.content }}</blockquote>
+                    <blockquote>{{ block.content|safe }}</blockquote>
                 </section>
 
             {% elif block.type == 'text_block' %}
                 <section class="section-style text-block">
-                    <p>{{ block.content }}</p>
+                    <p>{{ block.content|safe }}</p>
                 </section>
 
             {% elif block.type == 'text_image_left' %}
                 <section class="section-style text-image-left">
                     <img src="{{ block.image_url }}" alt="{{ block.alt_text }}">
-                    <p>{{ block.content }}</p>
+                    <p>{{ block.content|safe }}</p>
                 </section>
 
             {% elif block.type == 'table' %}
@@ -35,13 +35,13 @@
                     <table>
                         <tr>
                             {% for header in block.headers %}
-                                <th>{{ header }}</th>
+                                <th>{{ header|safe }}</th>
                             {% endfor %}
                         </tr>
                         {% for row in block.rows %}
                             <tr>
                                 {% for cell in row %}
-                                    <td>{{ cell }}</td>
+                                    <td>{{ cell|safe }}</td>
                                 {% endfor %}
                             </tr>
                         {% endfor %}

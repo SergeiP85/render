@@ -1,9 +1,18 @@
+header {
+    background-image: url('/static/images/spring3.jpg'); /* Путь к картинке */
+    background-size: cover; /* Растягиваем картинку на весь элемент */
+    background-position: center center; /* Центрируем картинку по вертикали и горизонтали */
+    background-repeat: no-repeat; /* Запрещаем повтор изображения */
+    width: 100%; /* Хедер должен растягиваться на всю ширину */
+}
+
 .petal {
     position: absolute;
     top: -50px;
-    color: #ff69b4; 
+    color: #e99fd5; 
     pointer-events: none; 
     animation: fall linear infinite;
+    opacity: 30%;
 }
 
 @keyframes fall {

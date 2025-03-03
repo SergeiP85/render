@@ -1,5 +1,5 @@
 const petalCount = 10; // Измените количество лепестков, если нужно
-const petalChars = ['🌸']; // Символ лепестка сакуры
+const petalChars = ['❀']; // Символ лепестка сакуры
 
 for (let i = 0; i < petalCount; i++) {
     const petal = document.createElement('div');

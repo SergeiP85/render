@@ -6,6 +6,7 @@
     <title>Pages List</title>
     <!-- Подключение Bootstrap 3 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles.css"> <!-- Подключаем кастомный CSS -->
 </head>
 <body>
     <div class="container">
@@ -37,21 +38,18 @@
                             <td>{{ page.id }}</td>
                             <td>{{ page.slug }}</td>
                             <td>
-                                <!-- Ссылка на страницу с динамическим slug -->
                                 <a href="{{ url_for('app_routes.show_page', slug=page.slug) }}" target="_blank" class="btn btn-default btn-sm">
                                     <span class="glyphicon glyphicon-link"></span> View Page
                                 </a>
                             </td>
                             <td>
-                                <!-- Отображение даты публикации -->
                                 {% if page.published_date %}
-                                    {{ page.published_date.strftime('%B %d, %Y') }}
+                                    {{ page.published_date.strftime('%Y-%m-%d') }}
                                 {% else %}
                                     Not set
                                 {% endif %}
                             </td>
                             <td>
-                                <!-- Отображение имени пользователя -->
                                 {% if page.author %}
                                     {{ page.author.username }}
                                 {% else %}
@@ -59,12 +57,9 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <!-- Кнопка "Редактировать" -->
                                 <a href="{{ url_for('app_routes.edit_page', id=page.id) }}" class="btn btn-info btn-sm">
                                     <span class="glyphicon glyphicon-pencil"></span> Edit
                                 </a>
-                                
-                                <!-- Кнопка "Удалить" с подтверждением -->
                                 <form method="POST" action="{{ url_for('app_routes.delete_page', id=page.id) }}" 
                                       style="display:inline;" 
                                       onsubmit="return confirm('Are you sure you want to delete this page?');">
@@ -82,6 +77,11 @@
                 <strong>No pages found.</strong> Create a new page!
             </div>
         {% endif %}
+
+        <!-- Кнопка возврата в админ-панель -->
+        <a href="/admin/" class="btn btn-info btn-sm">
+            <span class="glyphicon glyphicon-chevron-left"></span> Back to Admin Panel
+        </a>
     </div>
 
     <!-- Подключение Bootstrap JS (опционально) -->

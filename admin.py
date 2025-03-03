@@ -64,17 +64,15 @@ class PageAdmin(ModelView):
 
     # Добавляем дополнительные поля
     form_extra_fields = {
-        'published_date': DateTimeField('Published Date', format='%Y-%m-%d %H:%M:%S', validators=[Optional()]),
+        'published_date': DateTimeField('Published Date', format='%Y-%m-%d', validators=[Optional()]),
         'image_url': StringField('Image URL'),
         'teaser_text': StringField('Teaser Text'),
         'category': StringField('Category')
     }
 
-    def on_model_change(self, form, model, is_created):
-        if is_created and not model.published_date:
-            model.published_date = datetime.utcnow()  # Устанавливаем текущую дату, если не введена
-        print(f"Form data: {form.data}")  # Логируем вводимые данные
-        return super().on_model_change(form, model, is_created)
+def on_model_change(self, form, model, is_created):
+    print(f"Form data: {form.data}")  # Логируем вводимые данные
+    return super().on_model_change(form, model, is_created)
 
 
 

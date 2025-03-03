@@ -2,7 +2,7 @@
 from flask import json
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import date, datetime
 
 db = SQLAlchemy()
 
@@ -69,7 +69,7 @@ class Page(db.Model):
     slug = db.Column(db.String(100), unique=True, nullable=False)
     title = db.Column(db.String(255), nullable=False)
     content = db.Column(db.Text, nullable=False)  # JSON content
-    published_date = db.Column(db.DateTime, default=datetime.utcnow)  # Date of publication
+    published_date = db.Column(db.Date, default=date.today)  # Изменили на Date для хранения только даты
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     # Новые поля

@@ -43,10 +43,11 @@
             <div class="form-group">
                 <label for="published_date" class="col-sm-2 control-label">Published Date:</label>
                 <div class="col-sm-10">
-                    <input type="datetime-local" class="form-control" id="published_date" name="published_date"
-                        value="{{ page.published_date.strftime('%Y-%m-%dT%H:%M') if page.published_date else '' }}">
+                    <input type="date" class="form-control" id="published_date" name="published_date"
+                           value="{{ page.published_date.strftime('%Y-%m-%d') if page.published_date else '' }}">
                 </div>
             </div>
+            
 
             <!-- Поле для Teaser Text -->
             <div class="form-group">

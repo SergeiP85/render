@@ -1,3 +1,4 @@
+from datetime import date
 from flask import current_app
 from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required
@@ -6,12 +7,14 @@ from models import Page, db, AboutMeSection, Experience, HeroContent, User, Proj
 import json
 from flask import jsonify
 from flask_login import current_user
+from admin import datetime
 
 app_routes = Blueprint('app_routes', __name__)
 
 @app_routes.route('/blog')
 def blog():
-    pages = Page.query.all()  # Получаем все страницы
+    # Сортируем страницы по published_date, от самых новых к старым
+    pages = Page.query.order_by(Page.published_date.desc()).all()
     return render_template('blog.html', pages=pages)
 
 # Главная страница
@@ -73,24 +76,39 @@ def create_page():
         slug = request.form['slug']
         title = request.form['title']
         content = request.form['content']
-        image_url = request.form.get('image_url')  # Получаем URL картинки
-        teaser_text = request.form.get('teaser_text')  # Получаем тизер
-        category = request.form.get('category')  # Получаем категорию
+        image_url = request.form.get('image_url')
+        teaser_text = request.form.get('teaser_text')
+        category = request.form.get('category')
+        published_date = request.form.get('published_date')  # Получаем дату публикации
 
         # Проверка на уникальность slug
         if Page.query.filter_by(slug=slug).first():
             return render_template('pages_list.html', pages=pages)
 
-        # Создание нового объекта страницы с автором и новыми полями
+        # Если дата указана, преобразуем в объект date
+        if published_date:
+            try:
+                published_date = datetime.strptime(published_date, '%Y-%m-%d').date()
+            except ValueError:
+                flash("Некорректный формат даты. Используйте 'YYYY-MM-DD'", "error")
+                return render_template('create_page.html')
+
+        # Если дата не указана, берем текущую
+        else:
+            published_date = date.today()
+
+        # Создание нового объекта страницы
         new_page = Page(
             slug=slug, 
             title=title, 
             content=content, 
-            user_id=current_user.id,  # Связка с текущим пользователем
-            image_url=image_url,  # Устанавливаем URL картинки
-            teaser_text=teaser_text,  # Устанавливаем тизер
-            category=category  # Устанавливаем категорию
+            user_id=current_user.id,
+            image_url=image_url,
+            teaser_text=teaser_text,
+            category=category,
+            published_date=published_date  # Объект date, а не строка
         )
+
         db.session.add(new_page)
         db.session.commit()
 
@@ -99,11 +117,12 @@ def create_page():
     return render_template('create_page.html')
 
 
+
 @app_routes.route('/admin/pages', methods=['GET'])
 @login_required
 def pages_list():
     # Получаем все страницы из базы данных
-    pages = Page.query.all()
+    pages = Page.query.order_by(Page.published_date.desc()).all()
     return render_template('pages_list.html', pages=pages)
 
 # Редактирование страницы
@@ -116,12 +135,24 @@ def edit_page(id):
         page.slug = request.form['slug']
         page.title = request.form['title']
         page.content = request.form['content']
+        page.image_url = request.form.get('image_url', '')  # Добавляем поле картинки
+        page.teaser_text = request.form.get('teaser_text', '')  # Добавляем тизер
+        page.category = request.form.get('category', '')  # Добавляем категорию
+
+        # Обновляем дату публикации, если указана в форме
+        published_date = request.form.get('published_date')
+        if published_date:
+            try:
+                page.published_date = datetime.strptime(published_date, '%Y-%m-%d')
+            except ValueError:
+                flash("Некорректный формат даты. Используйте 'YYYY-MM-DD'", "error")
 
         db.session.commit()
-
+        flash("Изменения сохранены!", "success")
         return redirect(url_for('admin.index'))
 
     return render_template('edit_page.html', page=page)
+
 
 # Удаление страницы
 @app_routes.route('/page/delete/<int:id>', methods=['POST'])
