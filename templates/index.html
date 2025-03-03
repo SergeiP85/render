@@ -198,7 +198,7 @@
                 <div class="chat-info">
                     <h3>Azure AI Chatbot</h3>
                     <p>{{ chat_settings.description|safe }}</p>
-                    <a href="static/files/Resume_Sergei_P.docx" class="button black">Download Resume</a>
+                    <a href="{{ url_for('static', filename='uploads/Resume_Sergei_P.docx') }}" class="button black">Download Resume</a>
                 </div>
                 <div class="chat-box">
                     <div class="scroll-area">
