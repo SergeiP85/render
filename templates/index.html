@@ -41,7 +41,7 @@
                         <button id="toggleMainTextButton">more</button>
                     </p>
                     <div class="call-to-action">
-                        <a href="{{ hero.resume_link }}" class="button black">
+                        <a href="{{ url_for('static', filename='uploads/Resume_Sergei_P.docx') }}" class="button black">
                             Download Resume
                         </a>
                         <a href="{{ hero.email_link }}" class="button white">
@@ -204,7 +204,7 @@
                     <div class="scroll-area">
                         <ul id="chat-log">
                             <!-- Начальные сообщения, которые отображаются при старте чата -->
-                            <li>
+                            <!-- <li>
                                 <span class="avatar bot">AI</span>
                                 <div class="message">
                                     Hi, I'm a chatbot that lets you interact with me jus as if I am Sergei. How can I help?
@@ -215,7 +215,7 @@
                                 <div class="message">
                                     I have a question to ask you about your resume...
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="chat-message">
